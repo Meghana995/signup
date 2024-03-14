@@ -8,7 +8,7 @@ import { PopupComponent } from './popup/popup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-// import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaModule } from 'ng-recaptcha';
 // import { NgxFileDropModule } from 'ngx-file-drop';
 
 @NgModule({
@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
+    RecaptchaModule
    
   ],
   providers: [
