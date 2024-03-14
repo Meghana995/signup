@@ -11,7 +11,7 @@ $break-small: 480px;
 .track-progress {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-    margin-bottom: 1rem;
+    // margin-bottom: 1rem;
 
     .multisteps-form__progress-btn,
     .multisteps-form__progress-btn-first {
