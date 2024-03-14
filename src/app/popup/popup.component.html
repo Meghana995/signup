@@ -1,0 +1,98 @@
+<!-- app -->
+<div class="modal-angular">
+
+    <!-- button show -->
+    <!-- <button (click)="clickRegister()">show</button> -->
+
+    <!-- overlay -->
+    <div class="overlay" *ngIf="showModal"></div>
+
+    <!-- modal -->
+    <div class="modal-message" *ngIf="showModal">
+<div *ngIf="!showOTP" class="mat-dialog-box">
+        <div  class="container-fluid">
+            <div class="row mt-5 form-group">
+                <div class="modalbox col-sm-12 center animate success">
+                    <div class="icon"><span class="glyphicon"><i class="fa fa-check ng-star-inserted"></i></span>
+                    </div>
+                    <h1 id="success_payment_title" style="margin-top: .5rem !important;"> </h1>
+                    <p class="text-center"><span id="success_payment_info"> Signup
+                            successfull. Your login details have been sent to you email {{emailEntered}} </span></p>
+                </div>
+                <div (click)="ClosePopUp()" class="col-md-12 text-right"><button class="blob-btn-cancel ml-auto btn mx-1 mx-1 tallite-action"
+                        style="min-width: 100px;"><!----> Close <!----><!----><span class="blob-btn-cancel__inner"><span
+                                class="blob-btn-cancel__blobs"><span class="blob-btn-cancel__blob"></span>
+                                <span class="blob-btn-cancel__blob"></span>
+                                <span class="blob-btn-cancel__blob"></span>
+                                <span class="blob-btn-cancel__blob"></span>
+                            </span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+        <div class="box" *ngIf="showOTP">
+            <div class="otp-header">
+                <div class="title"> Verify OTP</div>
+            </div>
+
+            <div class="otp-content">
+                <div class="otp-wraper">
+                    <div class="otp-msg"> Verification code has been sent to your email {{emailEntered}} . please enter
+                        it to verify.
+                    </div>
+                    <div class="otp">
+                        <div class="otp-label">
+
+                            <div class="input-box">
+                                <input type="text" placeholder="Enter 4 Digit OTP"  [(ngModel)]="otp" name="otp" required pattern="[0-9]*" maxlength="4">
+                                <label>OTP <span style="color:red;">*</span> </label>
+                                <small class="text-danger" *ngIf="invalidOTP"> Invalid OTP</small>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div></div>
+                    <div class="resend">Didnt receive verification code? <div class="resend-txt" (click)="startTimer()">
+                            Resend </div>
+                        <div class="timer" *ngIf="showTimer">({{timeLeft}} s)</div>
+                    </div>
+                    <div>
+
+                        <!-- <re-captcha (resolved)="resolved($event)"
+                            siteKey="6Le_IoYpAAAAAHlXP8OD10f3zp59sWUQikUakS6j"></re-captcha> -->
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button (click)="ClosePopUpButton()" class="ml-auto btn-sm blob-btn-cancel btns mx-1 mx-1 tallite-action"
+                        style="min-width: 5rem;"> Close
+                        <span class="blob-btn-cancel__inner">
+                            <span class="blob-btn-cancel__blobs">
+                                <span class="blob-btn-cancel__blob"></span>
+                                <span class="blob-btn-cancel__blob"></span>
+                                <span class="blob-btn-cancel__blob"></span>
+                                <span class="blob-btn-cancel__blob"></span>
+                            </span>
+                        </span>
+                    </button>
+                    <button (click)="clickPopupSubmit()" class="blob-btn btn mx-1 btn-sm tallite-action"
+                        style="min-width:5rem;" type="submit">
+                        <span class="register-txt">Submit</span>
+                        <!-- <i class="fa fa-angle-double-right ml-2"></i> -->
+                        <span class="blob-btn__inner">
+                            <span class="blob-btn__blobs">
+                                <span class="blob-btn__blob"></span>
+                                <span class="blob-btn__blob"></span>
+                                <span class="blob-btn__blob"></span>
+                                <span class="blob-btn__blob"></span>
+                            </span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,1 +1,441 @@
-<h1>Meghana</h1>
+<div class="outer-container">
+  <div class="header-container">
+    <div class="header-top">
+      <div class="icons-social-media">
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"> <i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+      </div>
+      <div class="country-language">
+        <div class="country">
+          <div style="display: inline-flex; gap: 10px;">
+            <div class="country-icon"></div>
+            <div clas="country-label">United Arab Emirates</div>
+          </div>
+          <div class="country-dropdown-arrow" (click)="countrydropdownClick()"><i class="fa-solid fa-angle-down"></i>
+          </div>
+        </div>
+        <div class="language">
+          <div class="lang-label">English</div>
+          <div class="lang-dropdown-icon"><i class="fa-solid fa-angle-down"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="logo"><img alt="adspace" style="background-size: 100%; height:60px;"
+          src="../assets/logo-cvmine.png" />
+      </div>
+
+      <ul class="nav">
+        <li class="nav-item" [ngClass]="{'first': signUp}" (click)="showSignUp()"><a class="nav-link" [ngClass]="{'second': signUp}" href="#">Sign Up</a>
+          <div class="logo-sign-up"></div>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#">Home</a>
+          <div class="logo-home"></div>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#">Jobs</a>
+          <div class="logo-job"></div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+ 
+  <div class="inner-container-box" *ngIf="signUp">
+    <div class="login-header">
+      <h6>Create Account</h6>
+      <div class="login-text"> or already registered ?<a href="">Login now</a></div>
+    </div>
+
+    <div class="container-field">
+
+      <!-- <div class="close-icon" *ngIf="!submitted" (click)="closeSignUp()"></div> -->
+
+
+      <div class="track-progress">
+        <button type="button" class="multisteps-form__progress-btn-first js-active">Your Details</button>
+        <div *ngIf="hideProgressbar">
+          <button type="button" class="multisteps-form__progress-btn-first js-active">Your Details</button>
+          <button type="button" class="multisteps-form__progress-btn">Update Basic Information</button>
+          <button type="button" class="multisteps-form__progress-btn">Summary</button>
+        </div>
+      </div>
+
+      <!-- <div *ngIf="uploading" class="loader-overlay">
+        <div class="loader"></div>
+      </div> -->
+      <!-- loader-main -->
+      <div class="loader-main" *ngIf="uploading">
+        <div class="loader-overlay">
+          <div class="wandering-cubes">
+            <div class="cube loader-cube1"></div>
+            <div class="cube loader-cube2"></div>
+            <div class="cube loader-cube3"></div>
+            <div class="cube loader-cube4"></div>
+          </div>
+        </div>
+      </div>
+      <form #userForm="ngForm" style="padding: 1.5rem;">
+
+        <!-- <div class="resume-upload-container">
+          <label for="resumeUpload" class="custom-file-upload">
+
+            <div *ngIf="onUpload" class="resume-upload" [class.d-none]="!resumeForm.valid"><i
+                class="fas fa-cloud-upload-alt"></i></div>
+           
+           
+            <div class="success-checkmark" *ngIf="!onUpload">
+              <div class="check-icon">
+                <span class="icon-line line-tip"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+              </div>
+            </div>
+            <input  type="file" id="resumeUpload" (change)="handleFileInput($event)" accept=".pdf,.doc,.docx" />
+           <div class="upload-text" *ngIf="onUpload">Upload Resume</div> <div class="upload-text" *ngIf="!onUpload && uploadedResume">{{ uploadedResume.name }} Resume uploaded Successfully <div *ngIf="!onUpload" (click)="deleteResume()"><img alt="adspace" src="../assets/trash3.svg" /></div></div> 
+            
+          </label>
+        </div> -->
+        <div class="first-row">
+
+          <div class="resume-upload-container">
+            <label>Upload your Resume here <span style="color:red">*</span> </label>
+            <div class="upload">
+              <div class="form-input"> <span *ngIf="!uploadedFileName">Attach your resume here <span
+                    style="color:red">*</span></span> <span *ngIf="uploadedFileName">{{ uploadedFileName }}</span></div>
+              <button class="upload-button" (click)="uploadResume()"> <span *ngIf="!uploadedFileName">Upload</span>
+                <span *ngIf="uploadedFileName">Change</span> </button>
+            </div>
+            <small *ngIf="!uploadedFileName && formSubmitted" class="text-danger">Please upload your resume</small>
+          </div>
+          <div class="referrel-code">
+            <label>Any Referral Code?</label>
+            <div class="apply">
+              <input type="text" #referral="ngModel" [(ngModel)]="userModel.referral" name="referral" class="form-input"
+                placeholder="Enter referral code" />
+              <button class="apply-button" (click)="applyReferral()">Apply</button>
+
+            </div>
+            <div class="error-msg" *ngIf="verifyCode">Failed to verify</div>
+            <!-- <small [class.d-none]="referralCode.valid || referralCode.untouched" class="text-danger">Name is required</small> -->
+          </div>
+        </div>
+
+        <div class="inner-form">
+          <div class="name-input">
+            <label>First Name <span style="color:red">*</span></label>
+            <input type="text" required #firstName="ngModel" class="form-input" name="firstName"
+              [(ngModel)]="userModel.firstName" placeholder="Enter First name"
+              [class.is-invalid]="firstName.invalid && firstName.touched" />
+            <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">First name is
+              required</small>
+
+          </div>
+          <div class="name-input">
+            <label>Last Name <span style="color:red">*</span></label>
+            <input type="text" required #lastName="ngModel" class="form-input" name="lastName"
+              [(ngModel)]="userModel.lastName" placeholder="Enter Middle and Last name"
+              [class.is-invalid]="lastName.invalid && lastName.touched" />
+            <small [class.d-none]="lastName.valid || lastName.untouched" class="text-danger">Last name is
+              required</small>
+          </div>
+
+
+          <!-- <div class="name-input">
+            <label>Phone Number</label>
+            <div class="phone-number-field" (click)="handleClick()">
+              <div class="prefix-control">
+                <select class="country-code" name="countryCode" [(ngModel)]="userModel.countryCode" required>
+                  <option *ngFor="let country of countryCodes" [value]="country.code">{{ country.code }} ({{
+                    country.name
+                    }})
+                  </option>
+                </select>
+              </div>
+              <input type="tel" #phone="ngModel" pattern="^\d{10}$" [class.is-invalid]="phone.invalid && phone.touched"
+                class="phone-number-input" name="phoneNumber" [(ngModel)]="userModel.phone" required>
+
+            </div>
+            <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+              <small class="text-danger" *ngIf="phone.errors['required']">Phone number is required</small>
+              <small class="text-danger" *ngIf="phone.errors['pattern']">Phone number must be 10 digits</small>
+            </div>
+
+          </div> -->
+          <div class="phone-number-container">
+            <label>Phone Number <span style="color:red">*</span></label>
+            <div class="name-input-phone">
+
+              <app-dropdown-menu></app-dropdown-menu>
+              <input type="tel" #phone="ngModel" pattern="^\d{10}$" class="phone-number-input" name="phoneNumber"
+                [(ngModel)]="userModel.phone" [class.is-invalid]="phone.invalid && phone.touched" required>
+            </div>
+            <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+              <small class="text-danger" *ngIf="phone.errors['required']">Phone number is required</small>
+              <small class="text-danger" *ngIf="phone.errors['pattern']">Phone number must be 10 digits</small>
+            </div>
+          </div>
+          <div class="name-input">
+            <label>Email<span style="color:red">*</span></label>
+            <input type="email" [class.is-invalid]="email.invalid && email.touched" class="form-input" name="email"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="userModel.email" #email="ngModel"
+              required />
+            <div *ngIf="email.errors && (email.invalid && email.touched)" class="error-message">
+              <small class="text-danger" *ngIf="email.errors['required']">Email is required.</small>
+              <small class="text-danger" *ngIf="!email.errors['required'] && email.errors['pattern']">Invalid email
+                format.</small>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+          <div class="name-input">
+            <label>Password</label>
+            <div class="password-container">
+              <div class="password-inner">
+                <input type="password" class="password-input" name="password" [(ngModel)]="userModel.password"
+                  #password="ngModel" placeholder="Enter Password" required>
+              </div>
+              <div (click)="togglePasswordVisibility()"> <i *ngIf="!showPassword" class="pointer fa fa-eye-slash"></i>
+                <div class="password-hide"><i *ngIf="showPassword" class="pointer fa fa-eye"></i>
+                  <div *ngIf="showPassword" class="pass-txt">{{userModel.password}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="name-input">
+            <label>Confirm Password</label>
+            <div class="password-container">
+              <div class="password-inner">
+                <input type="password" class="password-input" name="confirmPassword"
+                  [(ngModel)]="userModel.confirmPassword" #confirmPassword="ngModel" placeholder="Re-enter Password"
+                  (input)="checkPasswordMatch()" required>
+              </div>
+              <div (click)="togglePasswordVisibilityConfirm()"> <i *ngIf="!showPasswordConfirm"
+                  class="pointer fa fa-eye-slash"></i>
+                <div class="password-hide"><i *ngIf="showPasswordConfirm" class="pointer fa fa-eye"></i>
+                  <div *ngIf="showPasswordConfirm" class="pass-txt">{{userModel.confirmPassword}}</div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="passwordMatchError" class="error-message">
+              <small class="text-danger">Passwords do not match.</small>
+            </div>
+          </div>
+
+          <!-- <div class="name-input">
+            <label>Confirm Password</label>
+            <input type="password" class="form-input" name="confirmPassword" [(ngModel)]="userModel.confirmPassword"
+              required #confirmPassword="ngModel" (input)="checkPasswordMatch()">
+            <div *ngIf="passwordMatchError" class="error-message">
+              <small class="text-danger">Passwords do not match.</small>
+            </div>
+          </div> -->
+
+
+
+
+
+
+        </div>
+
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" name="subscribe" [(ngModel)]="userModel.subscribe" required>
+          <label class="form-check-label" style="font-size: 15px;">I agree to the <a
+              style="color:#0056b3; font-weight: 400;;"
+              href="/html/body/app-root/mat-drawer-container/mat-drawer-content/app-reg-basic/div/div/div/div[2]/div[2]/div/form/div/div[10]/a">
+              Terms of Use </a></label>
+        </div>
+
+        <div class="submit-button" (click)="onSubmit()">
+          <!-- [disabled]="userForm.form.invalid || passwordMatchError" -->
+          <button [disabled]="userForm.form.invalid || passwordMatchError || !uploadedFileName"
+            class="blob-btn btn mx-1 tallite-action" style="min-width:8rem;" type="submit">
+            <span class="register-txt">Register</span>
+            <i class="fa fa-angle-double-right ml-2"></i>
+            <span class="blob-btn__inner">
+              <span class="blob-btn__blobs">
+                <span class="blob-btn__blob"></span>
+                <span class="blob-btn__blob"></span>
+                <span class="blob-btn__blob"></span>
+                <span class="blob-btn__blob"></span>
+              </span>
+            </span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div *ngIf="afterRegister">
+    <div class="prefilled-container">
+    <div class="first-row">
+
+      <div class="resume-upload-container">
+        <label>Upload your Resume here <span style="color:red">*</span> </label>
+        <div class="upload">
+          <div class="form-input"> <span *ngIf="!uploadedFileName">Attach your resume here <span
+                style="color:red">*</span></span> <span *ngIf="uploadedFileName">{{ uploadedFileName }}</span></div>
+          <button class="upload-button" (click)="uploadResume()"> <span *ngIf="!uploadedFileName">Upload</span>
+            <span *ngIf="uploadedFileName">Change</span> </button>
+        </div>
+        <small *ngIf="!uploadedFileName && formSubmitted" class="text-danger">Please upload your resume</small>
+      </div>
+      <div class="referrel-code">
+        <label>Any Referral Code?</label>
+        <div class="apply">
+          <input type="text" #referral="ngModel" [(ngModel)]="userModel.referral" name="referral" class="form-input"
+            placeholder="Enter referral code" />
+          <button class="apply-button" (click)="applyReferral()">Apply</button>
+
+        </div>
+        <div class="error-msg" *ngIf="verifyCode">Failed to verify</div>
+        <!-- <small [class.d-none]="referralCode.valid || referralCode.untouched" class="text-danger">Name is required</small> -->
+      </div>
+    </div>
+
+    <div class="inner-form">
+      <div class="name-input">
+        <label>First Name <span style="color:red">*</span></label>
+        <input type="text" required #firstName="ngModel" class="form-input" name="firstName"
+          [(ngModel)]="userModel.firstName" placeholder="Enter First name"
+          [class.is-invalid]="firstName.invalid && firstName.touched" />
+        <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">First name is
+          required</small>
+
+      </div>
+      <div class="name-input">
+        <label>Last Name <span style="color:red">*</span></label>
+        <input type="text" required #lastName="ngModel" class="form-input" name="lastName"
+          [(ngModel)]="userModel.lastName" placeholder="Enter Middle and Last name"
+          [class.is-invalid]="lastName.invalid && lastName.touched" />
+        <small [class.d-none]="lastName.valid || lastName.untouched" class="text-danger">Last name is
+          required</small>
+      </div>
+
+
+      <!-- <div class="name-input">
+        <label>Phone Number</label>
+        <div class="phone-number-field" (click)="handleClick()">
+          <div class="prefix-control">
+            <select class="country-code" name="countryCode" [(ngModel)]="userModel.countryCode" required>
+              <option *ngFor="let country of countryCodes" [value]="country.code">{{ country.code }} ({{
+                country.name
+                }})
+              </option>
+            </select>
+          </div>
+          <input type="tel" #phone="ngModel" pattern="^\d{10}$" [class.is-invalid]="phone.invalid && phone.touched"
+            class="phone-number-input" name="phoneNumber" [(ngModel)]="userModel.phone" required>
+
+        </div>
+        <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+          <small class="text-danger" *ngIf="phone.errors['required']">Phone number is required</small>
+          <small class="text-danger" *ngIf="phone.errors['pattern']">Phone number must be 10 digits</small>
+        </div>
+
+      </div> -->
+      <div class="phone-number-container">
+        <label>Phone Number <span style="color:red">*</span></label>
+        <div class="name-input-phone">
+
+          <app-dropdown-menu></app-dropdown-menu>
+          <input type="tel" #phone="ngModel" pattern="^\d{10}$" class="phone-number-input" name="phoneNumber"
+            [(ngModel)]="userModel.phone" [class.is-invalid]="phone.invalid && phone.touched" required>
+        </div>
+        <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+          <small class="text-danger" *ngIf="phone.errors['required']">Phone number is required</small>
+          <small class="text-danger" *ngIf="phone.errors['pattern']">Phone number must be 10 digits</small>
+        </div>
+      </div>
+      <div class="name-input">
+        <label>Email<span style="color:red">*</span></label>
+        <input type="email" [class.is-invalid]="email.invalid && email.touched" class="form-input" name="email"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="userModel.email" #email="ngModel"
+          required />
+        <div *ngIf="email.errors && (email.invalid && email.touched)" class="error-message">
+          <small class="text-danger" *ngIf="email.errors['required']">Email is required.</small>
+          <small class="text-danger" *ngIf="!email.errors['required'] && email.errors['pattern']">Invalid email
+            format.</small>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      <div class="name-input">
+        <label>Password</label>
+        <div class="password-container">
+          <div class="password-inner">
+            <input type="password" class="password-input" name="password" [(ngModel)]="userModel.password"
+              #password="ngModel" placeholder="Enter Password" required>
+          </div>
+          <div (click)="togglePasswordVisibility()"> <i *ngIf="!showPassword" class="pointer fa fa-eye-slash"></i>
+            <div class="password-hide"><i *ngIf="showPassword" class="pointer fa fa-eye"></i>
+              <div *ngIf="showPassword" class="pass-txt">{{userModel.password}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="name-input">
+        <label>Confirm Password</label>
+        <div class="password-container">
+          <div class="password-inner">
+            <input type="password" class="password-input" name="confirmPassword"
+              [(ngModel)]="userModel.confirmPassword" #confirmPassword="ngModel" placeholder="Re-enter Password"
+              (input)="checkPasswordMatch()" required>
+          </div>
+          <div (click)="togglePasswordVisibilityConfirm()"> <i *ngIf="!showPasswordConfirm"
+              class="pointer fa fa-eye-slash"></i>
+            <div class="password-hide"><i *ngIf="showPasswordConfirm" class="pointer fa fa-eye"></i>
+              <div *ngIf="showPasswordConfirm" class="pass-txt">{{userModel.confirmPassword}}</div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="passwordMatchError" class="error-message">
+          <small class="text-danger">Passwords do not match.</small>
+        </div>
+      </div>
+
+      <!-- <div class="name-input">
+        <label>Confirm Password</label>
+        <input type="password" class="form-input" name="confirmPassword" [(ngModel)]="userModel.confirmPassword"
+          required #confirmPassword="ngModel" (input)="checkPasswordMatch()">
+        <div *ngIf="passwordMatchError" class="error-message">
+          <small class="text-danger">Passwords do not match.</small>
+        </div>
+      </div> -->
+
+
+
+
+
+
+    </div>
+  </div>
+    
+  </div>
+</div>
+<div *ngIf="showPopup">
+  <app-popup [emailEntered]="emailentered" (ClosePopup)="popUpClose()"></app-popup>
+</div>

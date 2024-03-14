@@ -1,0 +1,17 @@
+<div class="dropdown-menu-container">
+    <div class="dropdown-menu-wraper">
+    <div class="dropdown-button" (click)="dropDownClick()">{{selectedOption?.code3 || "India"}}({{selectedOption?.number || "+91"}})
+        <!-- <div class="separator"></div> -->
+        <!-- <div class="dropdown-icon"><i class="fa-solid fa-angle-down"></i></div> -->
+
+        <div id="dropdown-list" *ngIf="showOnClick">
+            <ul>
+                <li *ngFor="let option of options" (click)="dropdownSelect(option)"> <a> {{option.code3}}({{option.number}})</a></li>
+
+            </ul>
+        </div>
+
+    </div>
+    <div class="dropdown-icon" (click)="dropDownClick()"><i class="fa-solid fa-angle-down"></i></div>
+</div>
+</div>
