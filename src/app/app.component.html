@@ -1,5 +1,16 @@
 <div class="outer-container">
+  
   <div class="header-container" [ngClass]="{'header-container-onpopup':showPopup}">
+    <div class="hamburger-menu" (click)="openMenu()"> <i class="fa fa-bars"></i></div>
+    <div class="side-nav" [style.width]="sideNavWidth" >
+      <div class="close-icon" (click)="closesidenav()"></div>
+      <a class="nav-link-side" href="#">Sign Up</a>
+         
+        <a class="nav-link-side" href="#">Home</a>
+         
+        <a class="nav-link-side" href="#">Jobs</a>
+          
+    </div>
     <div class="header-top">
       <div class="icons-social-media">
         <a href="#"><i class="fa fa-facebook"></i></a>
@@ -23,9 +34,8 @@
       </div>
     </div>
     <div class="header">
-      <div class="logo">
-      </div>
-
+      <div class="logo"></div>
+      
       <ul class="nav">
         <li class="nav-item" [ngClass]="{'first': signUp}" (click)="showSignUp()"><a class="nav-link" [ngClass]="{'second': signUp}" href="#">Sign Up</a>
           <div class="logo-sign-up"></div>
@@ -38,6 +48,7 @@
         </li>
 
       </ul>
+      
     </div>
   </div>
  

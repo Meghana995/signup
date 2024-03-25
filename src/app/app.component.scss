@@ -186,6 +186,7 @@ p {
 
 .outer-container {
     font-family: Poppins, sans-serif;
+    
     .inner-container-box{
         margin: 132px auto;
     }
@@ -867,17 +868,18 @@ p {
         }
     }
 
-    // .close-icon {
-    //     background-image: url(../assets/x.svg);
-    //     background-size: 100%;
-    //     background-repeat: no-repeat;
-    //     //  background-position: top;
-    //     width: 20px;
-    //     height: 20px;
-    //     position: absolute;
-    //     top: 15px;
-    //     right: 15px;
-    // }
+    .close-icon {
+        background-image: url(../assets/x.svg);
+        background-size: 100%;
+        background-repeat: no-repeat;
+        //  background-position: top;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        transition: 0.3s;
+    }
 
     // .close-round {
     //     background-image: url(../assets/x-circle.svg);
@@ -1419,8 +1421,60 @@ input[type="file"] {
     position: absolute;
     width: 1px;
 }
-
+@media (min-width: 766px)  {
+    .outer-container .hamburger-menu,.outer-container .side-nav,.outer-container .nav-link-side, .outer-container .nav-link-side:hover{
+        display: none;
+       
+    }
+}
 @media (min-width: 200px) and (max-width: 766px) {
+    .outer-container .hamburger-menu{
+       .fa{
+        padding: 0.45rem 0.75rem;
+        font-size: 1.25rem;
+       }
+        
+        height: 7px;
+    color: black !important;
+    }
+    .outer-container .side-nav{
+        height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #ff7112;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+
+    }
+
+
+    .outer-container .nav-link-side {
+        // padding: 8px 8px 8px 32px;
+        // text-decoration: none;
+        // font-size: 25px;
+        // color: #818181;
+        // display: block;
+         transition: 0.3s;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: -webkit-center;
+        padding: 9px;
+        font-size: 1.2rem;
+        font-weight: 400;
+        font-family: inherit;
+        display: grid;
+      }
+      
+      .outer-container .nav-link-side:hover {
+        color: #f1f1f1;
+      }
+   
     .outer-container .inner-container-box {
         margin: 54px auto !important;
     }

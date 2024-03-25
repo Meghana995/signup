@@ -43,6 +43,8 @@ export class AppComponent {
   showPasswordConfirm: boolean=false;
   formSubmitted: boolean=false;
   afterRegister: boolean=false;
+  sideNav: boolean=false;
+  sideNavWidth: string='0px';
  
   constructor( private fb: FormBuilder,private el: ElementRef) {
     // const nums = [2, 7, 11, 15];
@@ -225,7 +227,15 @@ export class AppComponent {
   countrydropdownClick(){
 
   }
+  openMenu(){
+    
+    this.sideNavWidth = '100%';
+    
 
+  }
+  closesidenav(){
+    this.sideNavWidth = '0';
+  }
   handleFileUpload(file: File) {
     // Implement your file upload logic here
     console.log('Uploaded file:', file);
