@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl,Validators } from '@angular/forms';
 import { User } from './user';
 import { NgFor } from '@angular/common';
 import { url } from 'inspector';
@@ -11,6 +11,16 @@ import { url } from 'inspector';
 })
 export class AppComponent {
   topics = ['Angular', 'React', 'Vue'];
+  loginForm= new  FormGroup({
+    firstName: new FormControl('',[Validators.required]),
+    referral:new FormControl(''),
+    lastName: new FormControl('',[Validators.required]),
+    phone:new FormControl('',[Validators.required, Validators.minLength(10)]),
+    email:new FormControl('',[Validators.required,Validators.email]),
+    password:new FormControl('',[Validators.required]),
+    confirmPassword:new FormControl('',[Validators.required]),
+    subscribe:new FormControl('',[Validators.required])
+  })
   countryCodes = [
     { code: '+1', name: 'USA' },
     { code: '+44', name: 'UK' },
@@ -51,15 +61,15 @@ export class AppComponent {
     // const target = 9;
     // const result = this.twoSum(nums, target);
     // console.log(result); // Output: [0, 1]
-    this.uploading = true;
+    // this.uploading = true;
    
         
-          setTimeout(() => {
+    //       setTimeout(() => {
            
-            this.uploading = false;
+    //         this.uploading = false;
            
             
-          }, 2000); 
+    //       }, 2000); 
   }
 
   ngOnInit() {
@@ -78,19 +88,45 @@ export class AppComponent {
     this.showPopup=false;
     // this.afterRegister=true;
   }
- 
+  get firstName(){
+    return this.loginForm.get('firstName')
+    }
+ get lastName(){
+ return this.loginForm.get('lastName')
+ }
+ get referral(){
+  return this.loginForm.get('referral')
+  
+  }
+ get phone(){
+  return this.loginForm.get('phone')
+  }
+  get email(){
+    return this.loginForm.get('email')
+    }
+    get password(){
+      return this.loginForm.get('password')
+      }
+      get confirmPassword(){
+        return this.loginForm.get('confirmPassword')
+        }
+        get subscribe(){
+          return this.loginForm.get('subscribe')
+        }
   deleteResume(){
     this.uploadedResume = null;
     this.resumeForm.patchValue({ resumeFile: null });
     this.onUpload=true;
   }
   applyReferral() {
-    const referralCode = this.userModel.referral;
-    if (referralCode === "Megha") {
+    const reference=this.referral?.value
+    
+    if (reference == "Megha") {
       this.verifyCode = false;
     } else {
       this.verifyCode = true;
     }
+  
   }
   validateTopic(value: any) {
     if (value === 'default') {
@@ -102,11 +138,13 @@ export class AppComponent {
   }
 
   checkPasswordMatch() {
-    const password = this.userModel.password;
-    const confirmPassword = this.userModel.confirmPassword;
+    const password = this.loginForm.get('password')?.value;
+  const confirmPassword = this.loginForm.get('confirmPassword')?.value;
   
     // Check if passwords match
+    if(confirmPassword){
     this.passwordMatchError = password !== confirmPassword;
+  }
   }
   showSignUp(){
     this.signUp=true;
@@ -150,20 +188,20 @@ export class AppComponent {
 
 
   onSubmit() {
-    this.uploading = true;
+    // this.uploading = true;
    
         
-          setTimeout(() => {
+    //       setTimeout(() => {
            
-            this.uploading = false;
-            this.formSubmitted=true;
+    //         this.uploading = false;
+    //         this.formSubmitted=true;
             
-          }, 2000); 
+    //       }, 2000); 
     
-    this.emailentered=this.userModel.email;
+    // this.emailentered=this.userModel.email;
    
    
-    if( this.emailentered && this.userModel.firstName && this.userModel.lastName && this.userModel.phone && this.userModel.password && this.userModel.confirmPassword && this.userModel.subscribe){
+    if( this.email?.value && this.firstName?.value && this.lastName?.value && this.phone?.value && this.password?.value && this.confirmPassword?.value && this.subscribe?.value){
       
       this.uploading = true;
       setTimeout(() => {
@@ -180,7 +218,7 @@ export class AppComponent {
   //  this.signUp=false;
   //  this.afterRegister=true
    
-    console.log(this.userModel);
+    console.log(this.loginForm.value);
     // this._enrollmentservice.enroll(this.userModel)
     //   .subscribe({
     //     next: (data) => console.log('success', data),
@@ -216,7 +254,7 @@ export class AppComponent {
     fileInput.type = 'file';
     fileInput.accept = '.pdf, .doc, .docx';
     fileInput.style.display = 'none';
-
+   
     fileInput.addEventListener('change', (event: any) => {
       const file = event.target.files[0];
       this.handleFileUpload(file);
@@ -248,7 +286,7 @@ export class AppComponent {
   handleFileUpload(file: File) {
     // Implement your file upload logic here
     console.log('Uploaded file:', file);
-    
+    this.uploading = false;
     // Set the uploaded file name for display
     this.uploadedFileName = file.name;
     if(file){

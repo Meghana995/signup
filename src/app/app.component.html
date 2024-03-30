@@ -86,7 +86,7 @@
           </div>
         </div>
       </div>
-      <form #userForm="ngForm" style="padding: 1.5rem;">
+      <form [formGroup]="loginForm" style="padding: 1.5rem;" (ngSubmit)="onSubmit()">
 
         <!-- <div class="resume-upload-container">
           <label for="resumeUpload" class="custom-file-upload">
@@ -123,7 +123,7 @@
           <div class="referrel-code">
             <label>Any Referral Code?</label>
             <div class="apply">
-              <input type="text" #referral="ngModel" [(ngModel)]="userModel.referral" name="referral" class="form-input"
+              <input type="text"  class="form-input" formControlName="referral"
                 placeholder="Enter referral code" />
               <button class="apply-button" (click)="applyReferral()">Apply</button>
 
@@ -136,19 +136,16 @@
         <div class="inner-form">
           <div class="name-input">
             <label>First Name <span style="color:red">*</span></label>
-            <input type="text" required #firstName="ngModel" class="form-input" name="firstName"
-              [(ngModel)]="userModel.firstName" placeholder="Enter First name"
-              [class.is-invalid]="firstName.invalid && firstName.touched" />
-            <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">First name is
+            <input type="text"  class="form-input"
+               placeholder="Enter First name" formControlName="firstName"/>
+            <small *ngIf="firstName && firstName.invalid && firstName.touched" class="text-danger">First name is
               required</small>
 
           </div>
           <div class="name-input">
             <label>Last Name <span style="color:red">*</span></label>
-            <input type="text" required #lastName="ngModel" class="form-input" name="lastName"
-              [(ngModel)]="userModel.lastName" placeholder="Enter Middle and Last name"
-              [class.is-invalid]="lastName.invalid && lastName.touched" />
-            <small [class.d-none]="lastName.valid || lastName.untouched" class="text-danger">Last name is
+            <input type="text" class="form-input"  placeholder="Enter Last name" formControlName="lastName"/>
+            <small *ngIf="lastName && lastName.invalid && lastName.touched" class="text-danger">Last name is
               required</small>
           </div>
 
@@ -179,23 +176,20 @@
             <div class="name-input-phone">
 
               <app-dropdown-menu></app-dropdown-menu>
-              <input type="tel" #phone="ngModel" pattern="^\d{10}$" class="phone-number-input" name="phoneNumber"
-                [(ngModel)]="userModel.phone" [class.is-invalid]="phone.invalid && phone.touched" required>
+              <input type="tel" class="phone-number-input" name="phoneNumber" formControlName="phone">
             </div>
-            <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
-              <small class="text-danger" *ngIf="phone.errors['required']">Phone number is required</small>
-              <small class="text-danger" *ngIf="phone.errors['pattern']">Phone number must be 10 digits</small>
+            <div *ngIf="phone && phone.invalid && phone.touched">
+              <small class="text-danger" *ngIf="phone">Phone number is invalid</small>
+              <!-- <small class="text-danger" *ngIf="phone">Phone number must be 10 digits</small> -->
             </div>
           </div>
           <div class="name-input">
             <label>Email<span style="color:red">*</span></label>
-            <input type="email" [class.is-invalid]="email.invalid && email.touched" class="form-input" name="email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="userModel.email" #email="ngModel"
-              required />
-            <div *ngIf="email.errors && (email.invalid && email.touched)" class="error-message">
-              <small class="text-danger" *ngIf="email.errors['required']">Email is required.</small>
-              <small class="text-danger" *ngIf="!email.errors['required'] && email.errors['pattern']">Invalid email
-                format.</small>
+            <input type="email" class="form-input" formControlName="email" />
+            <div *ngIf="email && email.invalid && email.touched" class="error-message">
+              <small class="text-danger" *ngIf="email">Email is invalid.</small>
+              <!-- <small class="text-danger" *ngIf="email">Invalid email
+                format.</small> -->
             </div>
           </div>
 
@@ -212,12 +206,11 @@
             <label>Password</label>
             <div class="password-container">
               <div class="password-inner">
-                <input type="password" class="password-input" name="password" [(ngModel)]="userModel.password"
-                  #password="ngModel" placeholder="Enter Password" required>
+                <input type="password" class="password-input" placeholder="Enter Password" formControlName="password"  (input)="checkPasswordMatch()">
               </div>
               <div (click)="togglePasswordVisibility()"> <i *ngIf="!showPassword" class="pointer fa fa-eye-slash"></i>
                 <div class="password-hide"><i *ngIf="showPassword" class="pointer fa fa-eye"></i>
-                  <div *ngIf="showPassword" class="pass-txt">{{userModel.password}}</div>
+                  <div *ngIf="showPassword" class="pass-txt">{{password?.value}}</div>
                 </div>
               </div>
             </div>
@@ -228,14 +221,13 @@
             <label>Confirm Password</label>
             <div class="password-container">
               <div class="password-inner">
-                <input type="password" class="password-input" name="confirmPassword"
-                  [(ngModel)]="userModel.confirmPassword" #confirmPassword="ngModel" placeholder="Re-enter Password"
-                  (input)="checkPasswordMatch()" required>
+                <input type="password" class="password-input" placeholder="Re-enter Password"
+                  (input)="checkPasswordMatch()"  formControlName="confirmPassword">
               </div>
               <div (click)="togglePasswordVisibilityConfirm()"> <i *ngIf="!showPasswordConfirm"
                   class="pointer fa fa-eye-slash"></i>
                 <div class="password-hide"><i *ngIf="showPasswordConfirm" class="pointer fa fa-eye"></i>
-                  <div *ngIf="showPasswordConfirm" class="pass-txt">{{userModel.confirmPassword}}</div>
+                  <div *ngIf="showPasswordConfirm" class="pass-txt">{{confirmPassword?.value}}</div>
                 </div>
               </div>
             </div>
@@ -261,16 +253,17 @@
         </div>
 
         <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" name="subscribe" [(ngModel)]="userModel.subscribe" required>
+          <input class="form-check-input" type="checkbox" name="subscribe" formControlName="subscribe">
           <label class="form-check-label" style="font-size: 15px;">I agree to the <a
               style="color:#0056b3; font-weight: 400;;"
               href="/html/body/app-root/mat-drawer-container/mat-drawer-content/app-reg-basic/div/div/div/div[2]/div[2]/div/form/div/div[10]/a">
               Terms of Use </a></label>
         </div>
 
-        <div class="submit-button" (click)="onSubmit()">
+        <div class="submit-button">
           <!-- [disabled]="userForm.form.invalid || passwordMatchError" -->
-          <button [disabled]="userForm.form.invalid || passwordMatchError || !uploadedFileName"
+          <!-- [disabled]="userForm.form.invalid || passwordMatchError || !uploadedFileName" -->
+          <button [disabled]="loginForm.invalid || !uploadedFileName || passwordMatchError"
             class="blob-btn btn mx-1 tallite-action" style="min-width:8rem;" type="submit">
             <span class="register-txt">Register</span>
             <i class="fa fa-angle-double-right ml-2"></i>
