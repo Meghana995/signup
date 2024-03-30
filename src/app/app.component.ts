@@ -61,15 +61,15 @@ export class AppComponent {
     // const target = 9;
     // const result = this.twoSum(nums, target);
     // console.log(result); // Output: [0, 1]
-    // this.uploading = true;
+    this.uploading = true;
    
         
-    //       setTimeout(() => {
+          setTimeout(() => {
            
-    //         this.uploading = false;
+            this.uploading = false;
            
             
-    //       }, 2000); 
+          }, 2000); 
   }
 
   ngOnInit() {
